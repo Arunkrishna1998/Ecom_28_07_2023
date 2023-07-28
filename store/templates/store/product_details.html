@@ -1,0 +1,172 @@
+{%extends 'store/main.html'%}
+{%load static%}
+{%block title%}Fashion Store{%endblock%}
+{%block body%}
+
+
+
+<form action="{%url 'add_to_cart'%}" method="post">
+	{% csrf_token %}
+<section class="section-content padding-y bg">
+<div class="container">
+
+<div class="card">
+	<div class="row no-gutters">
+<!--		<aside class="col-md-6">-->
+<!--		<article class="gallery-wrap">-->
+<!--			<div class="img-big-wrap">-->
+<!--			   <a href="#"><img src="{{product.image.url}}"></a>-->
+<!--			</div>-->
+<!--		</article>-->
+<!--			<div style="margin: 4px, 4px;-->
+<!--        padding: 4px;-->
+<!--        //background-color: #08c708;-->
+<!--        width: 550px;-->
+<!--        overflow-x: auto;-->
+<!--        overflow-y: hidden;-->
+<!--        white-space: nowrap;" id="image_list">-->
+<!--			<img src="{{product.image.url}}" height="100" width="100" onclick="changeBigImage(this)">-->
+<!--			<img src="{{product.image.url}}" height="100" width="100" onclick="changeBigImage(this)">-->
+<!--			<img src="{{product.image.url}}" height="100" width="100" onclick="changeBigImage(this)">-->
+<!--			<img src="{{product.image.url}}" height="100" width="100" onclick="changeBigImage(this)">-->
+<!--			<img src="{{product.image.url}}" height="100" width="100" onclick="changeBigImage(this)">-->
+<!--			<img src="{{product.image.url}}" height="100" width="100" onclick="changeBigImage(this)">-->
+<!--			<img src="{{product.image.url}}" height="100" width="100" onclick="changeBigImage(this)">-->
+<!--			<img src="{%static 'images/about-img.png'%}" height="100" width="100" onclick="changeBigImage(this)">-->
+<!--			</div>-->
+<!--		</aside>-->
+
+
+
+<aside class="col-md-6">
+  <article class="gallery-wrap">
+    <div class="img-big-wrap ">
+
+      <a href="#" ><img id="big-image" src="{{ product.image.url }}"></a>
+
+    </div>
+  </article>
+  <div style="margin: 4px;
+              padding: 4px;
+              //background-color: #08c708;
+              width: 550px;
+              overflow-x: auto;
+              overflow-y: hidden;
+              white-space: nowrap;" id="image_list">
+      {%for image in image_list%}
+        <img src="{{image.image.url}}" height="100" width="100" onclick="changeBigImage(this)">
+      {%endfor%}
+  </div>
+</aside>
+
+<script>
+  function changeBigImage(clickedImage) {
+    const bigImage = document.getElementById("big-image");
+    bigImage.src = clickedImage.src;
+  }
+</script>
+
+
+<main class="col-md-6 border-left">
+<article class="content-body">
+
+<h2 class="title">{{product.product_name}}</h2>
+<input type="hidden" name="product_id" value="{{product.uid}}">
+<div class="mb-3" id="price">
+	<var class="price h4">₹{{product.price}}.00</var>
+</div>
+
+<p>{{product.product_description}}</p>
+
+
+<hr>
+	<div class="row" id="colorOptions">
+		<div class="item-option-select" >
+			<h6>Choose Color</h6>
+			<div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
+
+<!--				{%for color in colors%}-->
+<!--				<label class="btn btn-light">-->
+<!--			    <input type="radio" name="radio_color" value="{{color.color}}" onclick="checkButton()"> {{color.color}}-->
+<!--			  	</label>-->
+<!--				{%endfor%}-->
+
+			<div class="form-group" id="div1">
+                <label for="color_id">Color</label>
+                <select  name="color_id" id="color_id" class="form-control" onchange="loadSize()" required>
+                    <option value="0" disabled selected>Select Color</option>
+                    {% for s in colors%}
+                        <option value="{{s.uid}}">{{s.color}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+
+			</div>
+		</div>
+	</div>
+	<div class="row" id="div2">
+
+	</div>
+	<hr>
+	<button class="btn btn-primary" type="submit"><span class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i></button>
+<!--	<a href="#" id="add-to-cart-btn" class="btn btn-primary" type="submit">-->
+<!--    <span class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i>-->
+<!--	</a>-->
+
+</article>
+		</main>
+	</div>
+</div>
+
+<br>
+
+
+
+
+
+
+</div> <!-- container .//  -->
+</section>
+</form>
+
+<script>
+    function loadSize() {
+        var sel = document.getElementById('color_id');
+        //alert(sel.value);
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+                // The responseText contains the HTML content from the Django view
+                document.getElementById("div2").innerHTML = this.responseText;
+            }
+        };
+
+        xhttp.open("GET", "../../size_list?color_id="+sel.value, true);
+        xhttp.send();
+    }
+
+
+function loadPrice() {
+        var sel = document.getElementById('size_id');
+        //alert(sel.value);
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+                // The responseText contains the HTML content from the Django view
+                document.getElementById("price").innerHTML = this.responseText;
+            }
+        };
+
+        xhttp.open("GET", "../../show_price?size_id="+sel.value, true);
+        xhttp.send();
+    }
+
+</script>
+<!--
+
+-->
+{%endblock%}
+

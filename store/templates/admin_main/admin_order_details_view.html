@@ -1,0 +1,97 @@
+{%extends 'admin_main/admin_base.html'%}
+{%load static%}
+{%block title%}Order Details{%endblock%}
+{%block body%}
+{% if user.is_authenticated and user.is_staff%}
+
+<main>
+                    <div class="container-fluid px-4">
+                        <h1 class="mt-4">Dashboard</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active">Dashboard</li>
+                        </ol>
+
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table me-1"></i>
+                                Order Details
+                            </div>
+                            <div class="card-body">
+                                <table id="datatablesSimple">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+
+                                            <th>Email</th>
+                                            <th>Phone</th>
+                                            <th>order_number</th>
+                                            <th>Ordered at</th>
+                                            <th>Last updated</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Phone</th>
+                                            <th>Order Number</th>
+                                            <th>Ordered at</th>
+                                            <th>Last updated</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </tfoot>
+
+                                    <tbody>
+                                    {%for order in order_list%}
+                                    <tr>
+                                        <td>{{order.first_name}} {{order.last_name}}</td>
+                                        <td>{{order.email}}</td>
+                                        <td>{{order.phone}}</td>
+                                        <td>{{order.order_number}}</td>
+                                        <td>{{order.created_at}}</td>
+                                        <td>{{order.updated_at}}</td>
+                                        <td>{{order.status}}</td>
+                                        <td>
+                                            <a class="btn btn-info" href="{%url 'admin_order_info_view' order=order.id%}">More Info</a>
+                                        </td>
+
+                                    </tr>
+                                    {%endfor%}
+                                    </tbody>
+
+                                </table>
+                                {%if messages%}
+                                {%for message in messages%}
+                                {{message}}
+                                {%endfor%}
+                                {%endif%}
+                            </div>
+                        </div>
+                    </div>
+                </main>
+
+
+<!--<script>-->
+<!--function confirmDelete(userId) {-->
+<!--  const confirmed = confirm(`Are you sure you want to delete user with ID ${userId}?`);-->
+<!--  if (confirmed) {-->
+<!--    // Perform the delete action-->
+<!--    console.log(`User with ID ${userId} deleted!`);-->
+<!--    // Make the API call or perform any other delete action here-->
+<!--  } else {-->
+<!--    // Cancel the delete action-->
+<!--    console.log("Delete action canceled.");-->
+<!--  }-->
+<!--}-->
+
+<!--// Example usage-->
+<!--//const userIdToDelete = "{{user.id}}"; // Replace "{{user.id}}" with the actual user ID from your server-side code-->
+<!--confirmDelete(userIdToDelete);-->
+
+
+<!--</script>-->
+{%endif%}
+{%endblock%}

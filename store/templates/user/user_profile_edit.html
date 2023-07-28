@@ -1,0 +1,51 @@
+{% extends "../store/main.html" %}
+{%load static%}
+{%block title%}User Profile Update{%endblock%}
+{%block body%}
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-conten padding-y bg">
+
+<div class="container">
+	<div class="row">
+	{%include 'user/dashboard_sidenav.html'%}
+	<main class="col-md-9">
+		<article class="card container" style="padding:10px; padding-left:30px">
+			<form action="{%url 'user_profile_edit'%}" method="post">
+				{% csrf_token %}
+            <div>
+				<div class="form-group">
+					<label>User Name : </label>
+					<input class="form-control" value="{{user.username}}" readonly>
+				</div>
+				<div class="form-group">
+					<label>First Name : </label>
+					<input class="form-control" value="{{user.first_name}}" name="first_name">
+				</div>
+				<div class="form-group">
+					<label>Last Name : </label>
+					<input class="form-control" value="{{user.last_name}}" name="last_name">
+				</div>
+				<div class="form-group">
+					<label>Email : </label>
+					<input class="form-control" value="{{user.email}}" name="email">
+				</div>
+				<div class="form-group">
+					<label>Contact : </label>
+					<input class="form-control" value="{{u.contact}}" name="contact">
+				</div>
+				<div class="form-group">
+					<button class="btn btn-primary" type="submit">UPDATE</button>
+					<a class="btn btn-warning" href="{%url 'user_profile_view'%}">CANCEL</a>
+				</div>
+            </div>
+			</form>
+		</article>
+
+	</main>
+</div>
+</div>
+
+
+</section>
+
+{%endblock%}
